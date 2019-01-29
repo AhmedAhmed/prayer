@@ -55,7 +55,8 @@ class Shortcode {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->version = $plugin->get_plugin_version();
 
-		add_shortcode( 'wp-reactivate', array( $this, 'shortcode' ) );
+		add_shortcode( 'wp_prayer_example', array( $this, 'shortcode' ) );
+		add_shortcode('wp_prayer', array( $this, 'prayer_code' ));
 	}
 
 
@@ -78,11 +79,31 @@ class Shortcode {
 		wp_register_style( $this->plugin_slug . '-shortcode-style', plugins_url( 'assets/css/shortcode.css', dirname( __FILE__ ) ), $this->version );
 	}
 
+	public function prayer_code($atts) {
+		wp_enqueue_script( $this->plugin_slug . '-shortcode-script' );
+		wp_enqueue_style( $this->plugin_slug . '-shortcode-style' );
+
+		$object_name = 'wp_prayers_' . uniqid();
+
+		$object = shortcode_atts( array(
+			'city' => 'Toronto, Ont',
+			'theme' => 'light',
+			'format' => 'local',
+			'api_nonce'   => wp_create_nonce( 'wp_rest' ),
+			'api_url'	  => rest_url( $this->plugin_slug . '/v1/' ),
+		), $atts, 'wp-prayer' );
+
+		wp_localize_script( $this->plugin_slug . '-shortcode-script', $object_name, $object );
+
+		$shortcode = '<div class="wp-prayers-masjid" data-object-id="' . $object_name . '"></div>';
+		return $shortcode;
+	}
+
 	public function shortcode( $atts ) {
 		wp_enqueue_script( $this->plugin_slug . '-shortcode-script' );
 		wp_enqueue_style( $this->plugin_slug . '-shortcode-style' );
 
-		$object_name = 'wpr_object_' . uniqid();
+		$object_name = 'wp_prayers_' . uniqid();
 
 		$object = shortcode_atts( array(
 			'title'       => 'Hello world',

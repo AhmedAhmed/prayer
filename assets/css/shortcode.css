@@ -1,0 +1,131 @@
+/* Prayers Codes */
+.prayer_container {
+  display:block;
+}
+
+.prayer-data h1 {
+  color: #800000;
+}
+.prayer-data h2 {
+  color:#000080;
+}
+
+.prayer-table {
+  border: 1px #27ae60 solid;
+  background:#FFF;
+}
+.prayer-header-row {
+  border: 0px;
+  color:#FFF;
+}
+.prayer-header-row td {
+  background:#3498db;
+  border: 0px !important;
+  text-align: center;
+  padding: 15px 5px !important;
+}
+.prayer-header-row td:nth-child(even) {
+  background: #2980b9;
+}
+td.prayer-header-row-day {
+  background: #666;
+  color:#FFF;
+}
+
+.prayer-table .prayer-items {
+  border: 0px;
+}
+.prayer-table .prayer-items td {
+  border: 0px !important;
+  text-align: center;
+}
+.prayer-table .prayer-items td:last-child{
+  border: 0px !important;
+}
+.prayer-table .prayer-items td:nth-child(even) {
+  background: #EEE;
+}
+.prayer-table .prayer-items.current td {
+  background: #2d3e4f;
+  color:#FFF;
+}
+.prayer-table .prayer-items.current td:nth-child(even) {
+  background: #2d3e4f;
+}
+.prayer-table .prayer-items td.prayer-items-date {
+  background: #666;
+  color:#FFF;
+}
+.prayer-table .prayer-items.current td.prayer-items-date {
+  background: #2d3e4f;
+  color:#FFF;
+}
+
+.mosque_prayers {
+  display: block;
+}
+.mosque_prayers > .prayer_item {
+  display: inline;
+  font-weight: bold;
+  padding: 0 2px;
+}
+.mosque_prayers > .prayer_item_header {
+  display: inline;
+  font-weight: bold;
+  padding: 0 10px;
+}
+.mosque_prayers.white > .prayer_item {
+  color:white;
+}
+.mosque_prayers.white > .prayer_item_header {
+  color:#FFFF00;
+}
+
+/* Todays Prayers */
+.prayer-today {
+  display:flex;
+  flex-direction: column;
+}
+.prayer-today > .prayers-date {
+  background: #2980b9;
+  box-sizing: border-box;
+  color:#FFF;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  padding: 30px;
+  height: 150px;
+}
+.prayer-today > .prayers-list {
+  border-bottom:1px #DDD solid;
+  border-left:1px #DDD solid;
+  border-right:1px #DDD solid;
+  background: #F8F8F8;
+  display:flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+.prayer-today > .prayers-list > .prayers-list-item {
+  box-sizing: border-box;
+  display: block;
+  font-size: 15px !important;
+  white-space: nowrap;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+}
+.prayer-today > .prayers-list > .prayers-list-item:nth-child(odd) {
+  background: #EEE;
+}
+.prayer-today > .prayers-list > .prayers-list-item > .prayer-name {
+  display:block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 900px) {
+  .prayer-today > .prayers-list {
+    flex-direction: column;
+  }
+}

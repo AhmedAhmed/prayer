@@ -26,7 +26,7 @@ class Plugin {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'wp-reactivate';
+	protected $plugin_slug = 'kbw-prayers';
 
 	/**
 	 * Instance of this class.
@@ -74,7 +74,7 @@ class Plugin {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		add_option( 'wpr_example_setting' );
+		add_option( 'wp_prayers_setting' );
 	}
 
 	/**
@@ -83,6 +83,7 @@ class Plugin {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+		delete_option('wp_prayers_setting');
 	}
 
 

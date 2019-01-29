@@ -10,13 +10,13 @@
  * @copyright 2017 Pangolin (Pty) Ltd
  *
  * @wordpress-plugin
- * Plugin Name:       WP-Reactivate
- * Plugin URI:        https://gopangolin.com
- * Description:       React boilerplate for WordPress plugins
+ * Plugin Name:       Khalid Prayers
+ * Plugin URI:        https://www.khalidmosque.com
+ * Description:       Khalid Mosque Prayer Times for the world
  * Version:           1.0.0
- * Author:            pangolin
- * Author URI:        https://gopangolin.com
- * Text Domain:       wp-reactivate
+ * Author:            Ahmed Ahmed
+ * Author URI:        https://www.ahmedahmed.net
+ * Text Domain:       kbw-prayers
  * License:           GPL-3.0
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:       /languages
@@ -79,7 +79,7 @@ function init() {
 	$wpr = Plugin::get_instance();
 	$wpr_shortcode = Shortcode::get_instance();
 	$wpr_admin = Admin::get_instance();
-	$wpr_rest = Endpoint\Example::get_instance();
+	$wpr_rest = Endpoint\Prayers::get_instance();
 }
 add_action( 'plugins_loaded', 'Pangolin\\WPR\\init' );
 

@@ -2,37 +2,52 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import fetchWP from '../utils/fetchWP';
+import prayTimes from '../utils/prayTimes';
+import {formatTime} from '../utils';
+import config from '../utils/config';
 
 export default class Admin extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      exampleSetting: '',
-      savedExampleSetting: ''
+      fajr : "",
+      dhuhr : "",
+      jumuah: "",
+      asr : "",
+      maghrib: "",
+      isha : ""
     };
 
     this.fetchWP = new fetchWP({
       restURL: this.props.wpObject.api_url,
       restNonce: this.props.wpObject.api_nonce,
     });
-
-    this.getSetting();
   }
 
   getSetting = () => {
-    this.fetchWP.get( 'example' )
+    this.fetchWP.get( 'prayers' )
     .then(
       (json) => this.setState({
-        exampleSetting: json.value,
-        savedExampleSetting: json.value
+        fajr: json.prayers.fajr,
+        dhuhr: json.prayers.dhuhr,
+        jumuah: json.prayers.jumuah,
+        asr: json.prayers.asr,
+        isha: json.prayers.isha
       }),
       (err) => console.log( 'error', err )
     );
   };
 
   updateSetting = () => {
-    this.fetchWP.post( 'example', { exampleSetting: this.state.exampleSetting } )
+    this.fetchWP.post( 'prayers', { 
+      fajr: this.state.fajr, 
+      dhuhr: this.state.dhuhr,
+      jumuah: this.state.jumuah,
+      asr: this.state.asr,
+      maghrib: this.state.maghrib,
+      isha: this.state.isha
+    } )
     .then(
       (json) => this.processOkResponse(json, 'saved'),
       (err) => console.log('error', err)
@@ -40,7 +55,7 @@ export default class Admin extends Component {
   }
 
   deleteSetting = () => {
-    this.fetchWP.delete( 'example' )
+    this.fetchWP.delete( 'prayers' )
     .then(
       (json) => this.processOkResponse(json, 'deleted'),
       (err) => console.log('error', err)
@@ -50,8 +65,7 @@ export default class Admin extends Component {
   processOkResponse = (json, action) => {
     if (json.success) {
       this.setState({
-        exampleSetting: json.value,
-        savedExampleSetting: json.value,
+        fajr: json.value
       });
     } else {
       console.log(`Setting was not ${action}.`, json);
@@ -60,13 +74,13 @@ export default class Admin extends Component {
 
   updateInput = (event) => {
     this.setState({
-      exampleSetting: event.target.value,
+      exampleSetting: event.target.value
     });
   }
 
   handleSave = (event) => {
     event.preventDefault();
-    if ( this.state.exampleSetting === this.state.savedExampleSetting ) {
+    if ( this.state.fajr === this.state.fajrPrevious ) {
       console.log('Setting unchanged');
     } else {
       this.updateSetting();
@@ -78,32 +92,78 @@ export default class Admin extends Component {
     this.deleteSetting();
   }
 
+  componentDidMount(){
+    const times = prayTimes.getTimes(new Date(), [config.location.lat, config.location.long ], -5  );
+    this.setState({maghrib: times.maghrib});
+    this.getSetting();
+  }
+
   render() {
     return (
       <div className="wrap">
-        <form>
-          <h1>WP Reactivate Settings</h1>
-          
-          <label>
-          Example Setting:
-            <input
-              type="text"
-              value={this.state.exampleSetting}
-              onChange={this.updateInput}
-            />
-          </label>
+        <form className="kbw-form">
+          <h1>Khalid Masjid Prayer Times</h1>
 
-          <button
-            id="save"
-            className="button button-primary"
-            onClick={this.handleSave}
-          >Save</button>
+          <div className="form-items">
+            <label htmlFor="fajr">Fajr:</label>
+            <input 
+              type="time"
+              placeholder="Fajr" 
+              onChange={(evt) => this.setState({fajr:evt.target.value})}
+              value={this.state.fajr} />
+          </div>
+          <div className="form-items">
+            <label htmlFor="dhuhr">Dhuhr:</label>
+            <input type="time"
+              id="dhuhr"
+              placeholder="Dhuhr"
+              onChange={(evt) => this.setState({dhuhr:evt.target.value})}
+              value={this.state.dhuhr} />
+          </div>
+          <div className="form-items">
+            <label htmlFor="jumuah">Jumuah:</label>
+            <input type="time"
+              id="jumuah"
+              placeholder="Jumuah"
+              onChange={(evt) => this.setState({ jumuah: evt.target.value })}
+              value={this.state.jumuah} />
+          </div>
+          <div className="form-items">
+            <label htmlFor="asr">Asr:</label>
+            <input type="time"
+              placeholder="Asr"
+              id="asr"
+              onChange={(evt) => this.setState({ asr: evt.target.value })}
+              value={this.state.asr} />
+          </div>
+          <div className="form-items">
+            <label htmlFor="maghrib">Maghrib:</label>
+            <input type="time"
+              id="maghrib"
+              readOnly={true}
+              value={this.state.maghrib} />
+          </div>
+          <div className="form-items">
+            <label htmlFor="isha">Isha:</label>
+            <input type="time" 
+              placeholder="Isha"
+              id="isha"
+              onChange={(evt) => this.setState({ isha: evt.target.value })}
+              value={this.state.isha} />
+          </div>
+          <div className="form-items">
+            <button onClick={this.handleSave.bind(this)} className="button button-primary">Save Changes</button>
+          </div>
 
-          <button
-            id="delete"
-            className="button button-primary"
-            onClick={this.handleDelete}
-          >Delete</button>
+          <div className="kbw-shortcodes">
+            <h2>SHORTCODES AVAILABLE</h2>
+            <h4>DEFAULT VIEW: <code>[wp_prayers theme="dark"]</code></h4>
+            <h4>MONTHLY VIEW: <code>[wp_prayers city="Toronto, Ontario" format="month"]</code></h4>
+            <h4>DAILY VIEW: <code>[wp_prayers city="Toronto, Ontario" format="day"]</code></h4>
+          </div>
+
+          <h1>[HACKED BY AHMED ABDIHAKIM AHMED] VERSION 1.0.</h1>
+
         </form>
       </div>
     );

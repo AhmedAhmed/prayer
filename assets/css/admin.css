@@ -1,0 +1,40 @@
+.kbw-form h1 {
+  padding-bottom: 20px;
+}
+.kbw-shortcodes {
+  background: #FFF;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color:#000;
+  font-size: 15px;
+  display: block;
+  width: 600px;
+  margin-top: 20px;
+  padding: 10px;
+}
+.kbw-shortcodes h2 {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.form-items {
+  clear:both;
+  zoom: 1;
+  overflow: auto;
+  display:flex;
+  padding: 5px 0;
+  justify-content: flex-end;
+  align-items: center;
+  width: 275px;
+}
+.form-items label {
+  font-size: 15px;
+  font-weight: bold;
+  padding-right: 40px;
+  vertical-align: middle;
+}
+.form-items input {
+  box-sizing: border-box;
+  font-size: 15px;
+  padding: 5px;
+  width: 150px;
+}
